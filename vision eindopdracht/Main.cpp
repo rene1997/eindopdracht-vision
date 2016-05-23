@@ -23,8 +23,9 @@ void Display()
 	glLoadIdentity();
 
 	//do predraw:
+	glEnable(GL_TEXTURE_2D);
 	manager.preDraw();
-	glDisable(GL_TEXTURE_2D);
+	//glDisable(GL_TEXTURE_2D);
 
 
 	glTranslatef(camera.posX, -camera.posY, 0);

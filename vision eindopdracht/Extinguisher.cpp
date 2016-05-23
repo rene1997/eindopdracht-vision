@@ -3,7 +3,7 @@
 
 
 
-Extinguisher::Extinguisher(KeyHandler * hand):ObjModel("models/extinguisher/Fireextinguisher_BI.obj")
+Extinguisher::Extinguisher(KeyHandler * hand):ObjModel("models/bow/bow_01.obj")
 {
 	this->handler = hand;
 	xpos = ypos = zpos = xrot = yrot = zrot = 0;
@@ -20,7 +20,9 @@ Extinguisher::~Extinguisher()
 
 void Extinguisher::draw()
 {
+	glEnable(GL_TEXTURE_2D);
 	ObjModel::draw();
+	glDisable(GL_TEXTURE_2D);
 }
 
 

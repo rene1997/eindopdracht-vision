@@ -19,11 +19,11 @@
     <Filter Include="Header Files\gamestates">
       <UniqueIdentifier>{4625dbaf-f2a0-4706-ae5c-45b918d7acf6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\models">
-      <UniqueIdentifier>{8a8d0673-e78e-4924-a11b-310edb67eb3e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\states">
       <UniqueIdentifier>{b35a1a64-83ec-4c4c-a2f8-e47a0b3d4e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objectmodels">
+      <UniqueIdentifier>{8a8d0673-e78e-4924-a11b-310edb67eb3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,10 +34,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Extinguisher.cpp">
-      <Filter>Source Files\models</Filter>
+      <Filter>Source Files\objectmodels</Filter>
     </ClCompile>
     <ClCompile Include="ObjModel.cpp">
-      <Filter>Source Files\models</Filter>
+      <Filter>Source Files\objectmodels</Filter>
     </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>Source Files\states</Filter>

@@ -250,8 +250,6 @@ void ObjModel::draw() {
 
 //	glTranslatef(xpos, ypos, zpos);
 
-
-
     for (auto &g : groups) {
         if (materials[g->materialIndex]->hasTexture) {
             glEnable(GL_TEXTURE_2D);
