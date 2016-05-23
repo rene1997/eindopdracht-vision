@@ -159,6 +159,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="ObjModel.cpp" />
+    <ClCompile Include="PlayingState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="KeyHandler.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="ObjModel.h" />
+    <ClInclude Include="PlayingState.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_perlin.h" />
   </ItemGroup>

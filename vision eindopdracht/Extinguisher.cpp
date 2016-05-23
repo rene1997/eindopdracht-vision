@@ -20,9 +20,7 @@ Extinguisher::~Extinguisher()
 
 void Extinguisher::draw()
 {
-	glEnable(GL_TEXTURE_2D);
 	ObjModel::draw();
-	glDisable(GL_TEXTURE_2D);
 }
 
 

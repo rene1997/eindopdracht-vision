@@ -1,6 +1,7 @@
 #include "GameStateManager.h"
 #include "GameState.h"
 #include "MenuState.h"
+#include "PlayingState.h"
 
 
 void GameStateManager::Init(Camera * cam, KeyHandler * handler)
@@ -9,6 +10,7 @@ void GameStateManager::Init(Camera * cam, KeyHandler * handler)
 	this->keyhandler = handler;
 	Cleanup();
 	states.push_back(new MenuState());
+	states.push_back(new PlayingState());
 
 	currentState = 0;
 	states.at(currentState)->Init(this, camera, handler);

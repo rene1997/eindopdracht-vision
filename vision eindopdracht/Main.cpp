@@ -20,13 +20,15 @@ void Display()
 
 	glMatrixMode(GL_MODELVIEW);
 
+
 	glLoadIdentity();
 
-	//do predraw:
 	glEnable(GL_TEXTURE_2D);
+	//load bow
 	manager.preDraw();
-	//glDisable(GL_TEXTURE_2D);
 
+	glDisable(GL_TEXTURE_2D);
+	//glLoadIdentity();
 
 	glTranslatef(camera.posX, -camera.posY, 0);
 	glRotatef(camera.rotX, 1, 0, 0);
@@ -44,6 +46,8 @@ void Display()
 	glPopMatrix();
 
 	glColor3f(1.0f, 1.0f, 1.0f);
+
+	glEnable(GL_TEXTURE_2D);
 	manager.Draw();
 
 
@@ -59,12 +63,16 @@ void onIdle()
 }
 
 void onTimer(int id) {
+	manager.Update();
 	glutTimerFunc(1000 / 60, onTimer, 1);
 }
 
 void onKeyboard(unsigned char key, int one, int two)
 {
 	key_handler.onKeyboard(key, one, two);
+	if (key == ']') {
+		manager.nextState();
+	}
 }
 
 void onKeyboardUp(unsigned char key, int one, int two)
@@ -107,14 +115,11 @@ int main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInit(&argc, argv);
 	glutInitWindowSize(1920, 1080);
-	glutCreateWindow("Shiro Bougyo");
+	glutCreateWindow("Mooi");
 
 	glEnable(GL_DEPTH_TEST);
 	glutFullScreen();
 	glutSetCursor(GLUT_CURSOR_NONE);
-#if __APPLE__
-	CGSetLocalEventsSuppressionInterval(0.0);
-#endif
 	glutIdleFunc(onIdle);
 	glutDisplayFunc(Display);
 	glutReshapeFunc([](int w, int h) { camera.width = w; camera.height = h; glViewport(0, 0, w, h); });
@@ -122,7 +127,6 @@ int main(int argc, char* argv[])
 	glutTimerFunc(1000 / 60, onTimer, 1);
 	glutKeyboardUpFunc(onKeyboardUp);
 	glutPassiveMotionFunc(mousePassiveMotion);
-	glutMouseFunc(mouseFunc);
 
 	glutWarpPointer(camera.width / 2, camera.height / 2);
 

@@ -48,6 +48,9 @@
     <ClCompile Include="MenuState.cpp">
       <Filter>Source Files\states</Filter>
     </ClCompile>
+    <ClCompile Include="PlayingState.cpp">
+      <Filter>Source Files\states</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayingState.h">
+      <Filter>Header Files\gamestates</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
