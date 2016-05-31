@@ -93,6 +93,10 @@ void PlayingState::preDraw()
 	//bow->getModel()->draw();
 }
 
+void PlayingState::checkMovementCollission()
+{
+}
+
 void PlayingState::HandleEvents() {
    
 }

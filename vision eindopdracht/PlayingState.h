@@ -21,6 +21,7 @@ class PlayingState : public GameState {
         virtual void Update() override;
         virtual void Draw() override;
 		virtual void preDraw() override;
+		virtual void checkMovementCollission() override;
     private:
         GameStateManager *manager;
         vector<pair<int, ObjModel*> > models; //Models to be drawn by the Draw() function

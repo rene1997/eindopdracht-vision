@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "ObjModel.h"
 #include "Extinguisher.h"
+#include "Player.h"
 
 class MenuState : public GameState  {
 	// Inherited via GameState
@@ -18,13 +19,14 @@ class MenuState : public GameState  {
 		virtual void Update() override;
 		virtual void Draw() override;
 		virtual void preDraw() override;
-		//void DrawCrosshair(int x, int y);
+		virtual void checkMovementCollission() override;
 	private:
 		GameStateManager *manager;
 		Camera * camera;
 		KeyHandler * key_handler;
 		vector<ObjModel*>  models;
 		Extinguisher * extinguisher_;
+		Player * player_;
 
 };
 

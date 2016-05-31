@@ -22,25 +22,12 @@ void KeyHandler::onKeyboardUp(unsigned char key, int, int)
 
 void KeyHandler::Update()
 {
-	for (int i = 0; i < 255; i++)
-	{
-		if (keys[i])
-			checkKey(keys[i]);
-			
-	}
+
 }
 
 void KeyHandler::checkKey(char key)
 {
-	switch(key)
-	{
-	case 27:		//ESC: exit
-		exit(0);
-		break;
 
-	default:
-		break;
-	}
 	
 }
 

@@ -16,6 +16,7 @@ class GameState {
 		virtual void Update() = 0;
 		virtual void Draw() = 0;
 		virtual void preDraw() =0;
+		virtual void checkMovementCollission() = 0;
 	//void ChangeState(GameStateManager* game, GameState* state) { game->ChangeState(state); }
 
 	protected: 

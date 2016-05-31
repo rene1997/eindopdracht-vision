@@ -15,24 +15,18 @@ void Display()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(90.0f, (float)camera.width / camera.height, 0.1, 50);
-
-
+	gluPerspective(60.0f, (float)camera.width / camera.height, 0.1, 30);
+	
 	glMatrixMode(GL_MODELVIEW);
-
-
 	glLoadIdentity();
 
-	glEnable(GL_TEXTURE_2D);
-	//load bow
+	//predraw
 	manager.preDraw();
 
-	glDisable(GL_TEXTURE_2D);
-	//glLoadIdentity();
-
-	glTranslatef(camera.posX, -camera.posY, 0);
+	
 	glRotatef(camera.rotX, 1, 0, 0);
 	glRotatef(camera.rotY, 0, 1, 0);
+	glTranslatef(camera.posX, camera.posY, camera.posZ);
 
 
 	glColor3f(0, 0.5, 0);
@@ -47,7 +41,6 @@ void Display()
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	glEnable(GL_TEXTURE_2D);
 	manager.Draw();
 
 
@@ -59,12 +52,14 @@ void Display()
 void onIdle()
 {
 	glutPostRedisplay();
-	key_handler.Update();
+	
 }
 
 void onTimer(int id) {
 	manager.Update();
-	glutTimerFunc(1000 / 60, onTimer, 1);
+	key_handler.Update();
+	glutTimerFunc(1/5, onTimer, 1);
+	
 }
 
 void onKeyboard(unsigned char key, int one, int two)
@@ -72,6 +67,9 @@ void onKeyboard(unsigned char key, int one, int two)
 	key_handler.onKeyboard(key, one, two);
 	if (key == ']') {
 		manager.nextState();
+	}
+	if (key == 27) {
+		exit(0);
 	}
 }
 
@@ -109,7 +107,7 @@ void mousePassiveMotion(int x, int y) {
 int main(int argc, char* argv[])
 {
 	key_handler = KeyHandler();
-	manager.Init(&camera, & key_handler);
+	
 	
 	
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -130,6 +128,7 @@ int main(int argc, char* argv[])
 
 	glutWarpPointer(camera.width / 2, camera.height / 2);
 
+	manager.Init(&camera, &key_handler);
 
 	glutMainLoop();
 

@@ -1,15 +1,10 @@
 #include "MenuState.h"
 #include "Camera.h"
-#ifdef __APPLE__
-#include <OpenGL/OpenGL.h>
-#include <GLUT/glut.h>
 
-#else
 #include <windows.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#endif
 
 //int crosshairX, crosshairY;
 
@@ -18,7 +13,7 @@ void MenuState::Init(GameStateManager * game, Camera * cam, KeyHandler * hand)
 	this->manager = game;
 	this->camera = cam;
 	this->key_handler = hand;
-	extinguisher_ = new Extinguisher(hand);
+	this->player_ = new Player(key_handler, camera, this);
 
 }
 
@@ -41,20 +36,13 @@ void MenuState::HandleEvents()
 
 void MenuState::Update()
 {
-	//DrawCrosshair(camera->width/2,camera->height/2);
+	player_->update();
 }
 
-//void MenuState::DrawCrosshair(int x, int y){
-//
-//	glPushMatrix();
-//	glTranslatef((float)3, 0.0f, (float)3);
-//	glPointSize(10);
-//	glColor3f(1.0f, 0.0f, 0.0f);
-//	glBegin(GL_POINTS);
-//	glVertex2f(crosshairX, crosshairY);
-//	glEnd();
-//	glPopMatrix();
-//}
+
+
+
+
 
 void MenuState::Draw()
 {
@@ -100,12 +88,18 @@ void MenuState::Draw()
 	glPopMatrix();
 
 
-
+	//extinguisher_->draw();
 	//DrawCrosshair(camera->width/2,camera->height/2);
 }
 
 void MenuState::preDraw()
 {
-	extinguisher_->draw();
+	//extinguisher_->draw();
+	player_->getItem()->draw();
+}
+
+void MenuState::checkMovementCollission()
+{
+
 
 }
