@@ -26,20 +26,9 @@ void Display()
 	
 	glRotatef(camera.rotX, 1, 0, 0);
 	glRotatef(camera.rotY, 0, 1, 0);
-	glTranslatef(camera.posX, camera.posY, camera.posZ);
+	glTranslatef(camera.posX, -camera.posY, camera.posZ);
 
 
-	glColor3f(0, 0.5, 0);
-	glPushMatrix();
-	glBegin(GL_QUADS);
-	glVertex3f(-15, -1, -15);
-	glVertex3f(15, -1, -15);
-	glVertex3f(15, -1, 15);
-	glVertex3f(-15, -1, 15);
-	glEnd();
-	glPopMatrix();
-
-	glColor3f(1.0f, 1.0f, 1.0f);
 
 	manager.Draw();
 
@@ -56,9 +45,10 @@ void onIdle()
 }
 
 void onTimer(int id) {
-	manager.Update();
 	key_handler.Update();
-	glutTimerFunc(1/5, onTimer, 1);
+	manager.Update();
+	
+	glutTimerFunc(1000/60, onTimer, 1);
 	
 }
 
@@ -79,11 +69,12 @@ void onKeyboardUp(unsigned char key, int one, int two)
 }
 
 void mouseFunc(int button, int state, int x, int y) {
-	printf("Received %d %d \n", button, state);
-	if (button == 0 && state == 1) {
-		//Tell gamestatemanager to shoot arrow
-
+	if (button == GLUT_LEFT_BUTTON && !state) {
+		key_handler.onKeyboard('l', x, y);
+	}else if(button == GLUT_LEFT_BUTTON){
+		key_handler.onKeyboardUp('l', x, y);
 	}
+
 }
 
 void mousePassiveMotion(int x, int y) {
@@ -124,6 +115,9 @@ int main(int argc, char* argv[])
 	glutKeyboardFunc(onKeyboard);
 	glutTimerFunc(1000 / 60, onTimer, 1);
 	glutKeyboardUpFunc(onKeyboardUp);
+
+	glutMouseFunc(mouseFunc);
+
 	glutPassiveMotionFunc(mousePassiveMotion);
 
 	glutWarpPointer(camera.width / 2, camera.height / 2);

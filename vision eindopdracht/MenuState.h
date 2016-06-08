@@ -6,6 +6,10 @@
 #include "ObjModel.h"
 #include "Extinguisher.h"
 #include "Player.h"
+#include <vector>
+#include <utility>
+
+class menuOverlay;
 
 class MenuState : public GameState  {
 	// Inherited via GameState
@@ -17,7 +21,10 @@ class MenuState : public GameState  {
 		virtual void Resume() override;
 		virtual void HandleEvents() override;
 		virtual void Update() override;
+		void DrawGround();
+		void DrawOverLay();
 		virtual void Draw() override;
+		void drawCube(int x0, int x1, int z0, int z1);
 		virtual void preDraw() override;
 		virtual void checkMovementCollission() override;
 	private:
@@ -27,7 +34,9 @@ class MenuState : public GameState  {
 		vector<ObjModel*>  models;
 		Extinguisher * extinguisher_;
 		Player * player_;
-
+		menuOverlay * overlay_;
+		std::vector<std::pair<std::string, bool>>* tasks;
+		int fire = 250;
 };
 
 #endif

@@ -25,6 +25,12 @@
     <Filter Include="Source Files\objectmodels">
       <UniqueIdentifier>{8a8d0673-e78e-4924-a11b-310edb67eb3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Overlays">
+      <UniqueIdentifier>{3332097e-53ea-481b-985a-f27caf3ebc5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\overlays">
+      <UniqueIdentifier>{296d5a55-48d6-4d7e-9f47-2a5cb612b4a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -53,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="menuOverlay.cpp">
+      <Filter>Source Files\Overlays</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +96,12 @@
       <Filter>Header Files\gamestates</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="menuOverlay.h">
+      <Filter>Header Files\overlays</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

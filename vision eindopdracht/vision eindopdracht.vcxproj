@@ -157,6 +157,7 @@
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="KeyHandler.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="menuOverlay.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="ObjModel.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -168,6 +169,8 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="KeyHandler.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="menuOverlay.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="ObjModel.h" />
     <ClInclude Include="Player.h" />
