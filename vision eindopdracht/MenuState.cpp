@@ -7,7 +7,9 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-
+#include "stb_image.h"
+#include "FireItem.h"
+#include "Fire.h"
 
 //int crosshairX, crosshairY;
 
@@ -17,9 +19,17 @@ void MenuState::Init(GameStateManager * game, Camera * cam, KeyHandler * hand)
 	this->camera = cam;
 	this->key_handler = hand;
 	this->player_ = new Player(key_handler, camera, this);
+
+	item = new FireItem("models/garbage_bin/untitled1.obj", 11,0,15);
 	
+	ObjModel * truck = new ObjModel("models/faun3500/untitled2.obj");
+	truck->xpos = -4; truck->zpos = -10; truck->yrot = 45;
+	models.push_back(truck);
+
 	tasks = new vector<pair<std::string, bool>>;
 	tasks->push_back(pair<std::string, bool>("1) Walk to the cube!", false));
+
+	LoadGround();
 
 	this->overlay_ = new menuOverlay(camera, tasks);
 }
@@ -44,33 +54,34 @@ void MenuState::HandleEvents()
 void MenuState::Update()
 {
 	player_->update();
+	
+	item->update(1);
+	
 
 
-	//task one
-	//if xpos player = correct
-	if (camera->posX >= -12 && camera->posX <= -10) {
-		//if zpos player = correct
-		if (camera->posZ <= -14 && camera->posZ >= -16 && !tasks->at(0).second)  {
+	//task one:
+	if (!tasks->at(0).second) {
+		if (item->checkCollision(camera->posX * -1, camera->posZ * -1)) {
 			tasks->push_back(pair<std::string, bool>("2) Click to extinguish", false));
 			tasks->at(0).second = true;
 		}
 	}
+	
 
 	//task 2:
-	if (tasks->at(0).second) {
-		if (camera->posX >= -12 && camera->posX <= -10 && camera->posZ <= -14 && camera->posZ >= -16) {
-			if (key_handler->keys['l'] && fire > 0) {
-				fire--;
+	if (tasks->size() == 2 && !tasks->at(1).second) {
 
-			}
-			else if (fire == 0) {
+		if (item->checkCollision(camera->posX*-1, camera->posZ*-1) &&key_handler->keys['l']) {
+			
+			item->removeFireHealth();
+		}
+		if (item->getFireHealth() == 0) {
 
-				tasks->at(1).second = true;
-			}
+			tasks->at(1).second = true;
 		}
 		
+		
 	}
-
 
 	bool done = true;
 	for (int i = 0; i < tasks->size(); i++) {
@@ -85,20 +96,25 @@ void MenuState::Update()
 
 
 
-
 }
 
 
 
 void MenuState::DrawGround() {
 
-	glColor3f(0, 0.5, 0);
+
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, groundTexture);
+
+	glColor3f(1, 1, 1);
 	glPushMatrix();
 	glBegin(GL_QUADS);
-	glVertex3f(-50, 0, -50);
-	glVertex3f(50, 0, -50);
-	glVertex3f(50, 0, 50);
-	glVertex3f(-50, 0, 50);
+
+	glTexCoord2f(0, 0); glVertex3f(-50, 0, -50);
+	glTexCoord2f(8, 0); glVertex3f(50, 0, -50);
+	glTexCoord2f(8, 8); glVertex3f(50, 0, 50);
+	glTexCoord2f(0, 8); glVertex3f(-50, 0, 50);
 	glEnd();
 	glPopMatrix();
 
@@ -113,59 +129,28 @@ void MenuState::DrawOverLay()
 
 void MenuState::Draw()
 {
+	//glEnable(GL_ALPHA_TEST);
+	//glAlphaFunc(GL_GREATER, 0.5);
+	//glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHT0);
+
 	DrawGround();
 
-	//Task one:
-	drawCube(10, 12, 14, 16);
+	
+	glColor3f(1, 1, 1);
+	for (auto &m : models) {
+		m->draw();
+	}
+
+	item->draw();
+
+
 	
 
-	overlay_->drawMenuOverLay(fire);
+	overlay_->drawMenuOverLay(item->getFireHealth());
 	//extinguisher_->draw();
 	//DrawCrosshair(camera->width/2,camera->height/2);
-}
-
-void MenuState::drawCube(int x0, int x1, int z0, int z1) {
-	glPushMatrix();
-
-	glBegin(GL_QUADS);
-	glColor3f(1, 0, 0);
-	glVertex3f(x0, -1, z0);
-	glVertex3f(x1, -1, z0);
-	glVertex3f(x1, 1, z0);
-	glVertex3f(x0, 1, z0);
-
-	glColor3f(1, 1, 0);
-	glVertex3f(x0, -1, z1);
-	glVertex3f(x1, -1, z1);
-	glVertex3f(x1, 1, z1);
-	glVertex3f(x0, 1, z1);
-
-	glColor3f(0, 0, 1);
-	glVertex3f(x0, -1, z0);
-	glVertex3f(x0, 1, z0);
-	glVertex3f(x0, 1, z1);
-	glVertex3f(x0, -1, z1);
-
-	glColor3f(1, -1, 1);
-	glVertex3f(x1, -1, z0);
-	glVertex3f(x1, 1, z0);
-	glVertex3f(x1, 1, z1);
-	glVertex3f(x1, -1, z1);
-
-	glColor3f(0, 1, 0);
-	glVertex3f(x0, -1, z0);
-	glVertex3f(x1, -1, z0);
-	glVertex3f(x1, -1, z1);
-	glVertex3f(x0, -1, z1);
-
-	glColor3f(1, 1, 0);
-	glVertex3f(x0, 1, z0);
-	glVertex3f(x1, 1, z0);
-	glVertex3f(x1, 1, z1);
-	glVertex3f(x0, 1, z1);
-	glEnd();
-
-	glPopMatrix();
 }
 
 void MenuState::preDraw()
@@ -179,3 +164,25 @@ void MenuState::checkMovementCollission()
 
 
 }
+
+void MenuState::LoadGround(){
+	int width, height, bpp;
+	unsigned char* data = stbi_load("textures/grass.png", &width, &height, &bpp, 4);
+	glGenTextures(1, &groundTexture);
+	glBindTexture(GL_TEXTURE_2D, groundTexture);
+	glTexImage2D(GL_TEXTURE_2D,
+		0,		//level
+		GL_RGBA,		//internal format
+		width,		//width
+		height,		//height
+		0,		//border
+		GL_RGBA,		//data format
+		GL_UNSIGNED_BYTE,	//data type
+		data);		//data
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+
+}
+
+

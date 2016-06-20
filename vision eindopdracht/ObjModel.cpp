@@ -9,21 +9,12 @@
 
 #include "stb_image.h"
 #include "stb_perlin.h"
+#include <tuple>
 
-#ifdef __APPLE__
-
-#include <OpenGL/OpenGL.h>
-#include <GLUT/glut.h>
-
-#else
 #include <windows.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#endif
-
-//TODO: Remove me before the final release
-#define DRAW_BOUNDING_BOX false
 
 
 std::string replace(std::string str, std::string toReplace, std::string replacement) {
@@ -57,9 +48,9 @@ inline std::string toLower(std::string data) {
 	return data;
 }
 
-
 ObjModel::ObjModel(std::string fileName) {
 	xpos = ypos = zpos = xrot = yrot = zrot = 0;
+	xscale = yscale = zscale = 1;
 	//Fix for the OSX project, because our paht starts from shiro-bougyo instead of Project
 #ifdef __APPLE__
 	fileName = "Project/" + fileName;
@@ -165,7 +156,16 @@ ObjModel::ObjModel(std::string fileName) {
 	groups.push_back(currentGroup);
 	CalcMinVertex();
 	CalcMaxVertex();
-	CalcBounds();
+
+
+	//Turning to vec:
+	for (ObjGroup *group : groups) {
+		for (Face &face : group->faces) {
+			for (auto &vertex : face.vertices) {
+				group->vecs.push_back(Vec(vertices[vertex.position]->x, vertices[vertex.position]->y, vertices[vertex.position]->z, normals[vertex.normal]->x, normals[vertex.normal]->y, normals[vertex.normal]->z, texcoords[vertex.texcoord]->x, texcoords[vertex.texcoord]->y));
+			}
+		}
+	}
 }
 
 void ObjModel::CalcMinVertex() {
@@ -194,7 +194,7 @@ void ObjModel::CalcMinVertex() {
 			smallestz = vertice->z;
 		}
 	}
-	printf("What I've found:\n %f %f %f\n", smallestx, smallesty, smallestz);
+	//printf("What I've found:\n %f %f %f\n", smallestx, smallesty, smallestz);
 
 	//Transform it into a vertex.
 	vertices_min = new Vec3f(smallestx, smallesty, smallestz);
@@ -228,7 +228,7 @@ void ObjModel::CalcMaxVertex() {
 		}
 	}
 
-	printf("What I've found:\n %f %f %f\n", maxx, maxy, maxz);
+	//printf("What I've found:\n %f %f %f\n", maxx, maxy, maxz);
 	vertices_max = new Vec3f(maxx, maxy, maxz);
 }
 
@@ -240,66 +240,70 @@ void ObjModel::draw() {
 	//This affects the entire model
 	//glColor
 	glPushMatrix();
-
 	glTranslatef(xpos, ypos, zpos);
-
 	glRotatef(xrot, 1, 0, 0);
 	glRotatef(yrot, 0, 1, 0);
 	glRotatef(zrot, 0, 0, 1);
+	glScalef(xscale, yscale, zscale);
 
 	//	glTranslatef(xpos, ypos, zpos);
+	for (auto &group : groups) {
+		ObjGroup gr = *group;
 
-
-
-	for (auto &g : groups) {
-		if (materials[g->materialIndex]->hasTexture) {
+		if (materials[gr.materialIndex]->hasTexture) {
 			glEnable(GL_TEXTURE_2D);
-			materials[g->materialIndex]->texture->bind();
+			materials[gr.materialIndex]->texture->bind();
 		}
 
-		glBegin(GL_TRIANGLES);
-		for (auto &f : g->faces) {
-			for (auto &v : f.vertices) {
-				glNormal3f(normals[v.normal]->x, normals[v.normal]->y, normals[v.normal]->z);
-				glTexCoord2f(texcoords[v.texcoord]->x, texcoords[v.texcoord]->y);
-				glVertex3f(vertices[v.position]->x, vertices[v.position]->y, vertices[v.position]->z);
-			}
-		}
-		glEnd();
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		glVertexPointer(3, GL_FLOAT, sizeof(Vec), ((float*)gr.vecs.data()));
+		glNormalPointer(GL_FLOAT, sizeof(Vec), ((float*)gr.vecs.data()) + 3);
+		glTexCoordPointer(2, GL_FLOAT, sizeof(Vec), ((float*)gr.vecs.data()) + 6);
+		glDrawArrays(GL_TRIANGLES, 0, gr.vecs.size());
+
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
 
-	if (DRAW_BOUNDING_BOX) {
-		glLineWidth(5);
+	//draw box:
+	
+	float width = vertices_max->x - vertices_min->x;
+	float depth = vertices_max->z - vertices_min->z;
+	glLineWidth(2);
 
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(vertices_max->x, vertices_max->y, vertices_min->z);
-		glVertex3f(vertices_min->x, vertices_max->y, vertices_min->z);
-		glVertex3f(vertices_min->x, vertices_min->y, vertices_min->z);
-		glVertex3f(vertices_max->x, vertices_min->y, vertices_min->z);
-		glEnd();
+	int scale = 1;
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_min->z* scale);
+	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_min->z* scale);
+	glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_min->z* scale);
+	glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_min->z* scale);
+	glEnd();
 
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(vertices_max->x, vertices_min->y, vertices_max->z);
-		glVertex3f(vertices_max->x, vertices_max->y, vertices_max->z);
-		glVertex3f(vertices_min->x, vertices_max->y, vertices_max->z);
-		glVertex3f(vertices_min->x, vertices_min->y, vertices_max->z);
-		glEnd();
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_max->z* scale);
+	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_max->z* scale);
+	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_max->z* scale);
+	glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_max->z* scale);
+	glEnd();
 
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(vertices_max->x, vertices_max->y, vertices_min->z);
-		glVertex3f(vertices_max->x, vertices_max->y, vertices_max->z);
-		glVertex3f(vertices_min->x, vertices_max->y, vertices_max->z);
-		glVertex3f(vertices_min->x, vertices_max->y, vertices_min->z);
-		glEnd();
-
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(vertices_max->x, vertices_min->y, vertices_max->z);
-		glVertex3f(vertices_min->x, vertices_min->y, vertices_max->z);
-		glVertex3f(vertices_min->x, vertices_min->y, vertices_min->z);
-		glVertex3f(vertices_max->x, vertices_min->y, vertices_min->z);
-		glEnd();
-
-	}
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_min->z* scale);
+	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_max->z* scale);
+	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_max->z* scale);
+	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_min->z* scale);
+	glEnd();
+	
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_max->z* scale);
+	glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_max->z* scale);
+	glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_min->z* scale);
+	glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_min->z* scale);
+	glEnd();
+	
 	glPopMatrix();
 }
 
@@ -344,59 +348,25 @@ void ObjModel::loadMaterialFile(std::string fileName, std::string dirName) {
 		else if (params[0] == "map_kd") {
 			currentMaterial->hasTexture = true;
 			currentMaterial->texture = new Texture(dirName + "/" + params[1]);
-			std::cout << "Made material named " << params[1] << std::endl;
+			//std::cout << "Made material named " << params[1] << std::endl;
 		}
-		else
-			std::cout << "Didn't parse " << params[0] << " in material file" << std::endl;
+		else {
+			//std::cout << "Didn't parse " << params[0] << " in material file" << std::endl;
+		}
+
 	}
 	if (currentMaterial != NULL)
 		materials.push_back(currentMaterial);
 
 }
 
-void ObjModel::PrintValues() {
-	printf("Xmin, Xmax : %f , %f\n", minx, maxx);
-	printf("Ymin, Zmax : %f , %f\n", miny, maxy);
-	printf("Zmin, Zmax : %f , %f\n", minz, maxz);
-
-}
-
-bool ObjModel::CollidesWith(ObjModel *obj2) {
-	this->CalcBounds();
-	obj2->CalcBounds();
-	bool retval = (this->minx <= obj2->maxx && this->maxx >= obj2->minx) &&
-		(this->miny <= obj2->maxy && this->maxy >= obj2->miny) &&
-		(this->minz <= obj2->maxz && this->maxz >= obj2->minz);
-	//    printf("THIS\n");
-	//    this->PrintValues();
-	//    printf("OBJ2\n");
-	//    obj2->PrintValues();
-	//    printf("------------\n");
-	return retval;
-}
-
-void ObjModel::update() {
+void ObjModel::update(float deltatime) {
 	yrot += 0.5;
 	if (xpos > 5) {
 		xpos = -5;
 	}
 }
 
-void ObjModel::CalcBounds() {
-	minx = vertices_min->x + xpos;
-	miny = vertices_min->y + ypos;
-	minz = vertices_min->z + zpos;
-
-	maxx = vertices_max->x + xpos;
-	maxy = vertices_max->y + ypos;
-	maxz = vertices_max->z + zpos;
-
-	//    printf("Calculated bounds are:\n");
-	//    printf("x: %f %f %f\n", minx, maxx,xpos);
-	//    printf("y: %f %f %f\n", miny, maxy,ypos);
-	//    printf("z: %f %f %f\n", minz, maxz,zpos);
-	//    exit(0);
-}
 
 
 ObjModel::MaterialInfo::MaterialInfo() {
@@ -451,9 +421,18 @@ ObjModel::Texture::Texture(const std::string &fileName) {
 	int width, height, bpp;
 	stbi_set_flip_vertically_on_load(true);
 	unsigned char *imgData = stbi_load(fileName.c_str(), &width, &height, &bpp, 4);
-
 	glGenTextures(1, &index);
 	glBindTexture(GL_TEXTURE_2D, index);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.5);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	GLfloat LightAmbient[] = { 2.5f, 2.5f, 2.5f, 3.0f };
+	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
+	/*GLfloat specular[] = { 0.0, 1.0, 0.0, 1.0 };
+	glMaterialfv(GL_LIGHT0, GL_SPECULAR,specular);*/
 
 	glTexImage2D(GL_TEXTURE_2D,
 		0,        //level
@@ -471,4 +450,21 @@ ObjModel::Texture::Texture(const std::string &fileName) {
 
 void ObjModel::Texture::bind() {
 	glBindTexture(GL_TEXTURE_2D, index);
+}
+
+
+ObjModel::Vec::Vec(float x, float y, float z, float nx, float ny, float nz, float tx, float ty)
+{
+	this->x = x;
+	this->y = y;
+	this->z = z;
+	this->normalx = nx;
+	this->normaly = ny;
+	this->normalz = nz;
+	this->texcoordx = tx;
+	this->texcoordy = ty;
+}
+
+ObjModel::Vec::~Vec()
+{
 }

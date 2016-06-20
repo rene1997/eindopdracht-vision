@@ -63,6 +63,12 @@
     <ClCompile Include="menuOverlay.cpp">
       <Filter>Source Files\Overlays</Filter>
     </ClCompile>
+    <ClCompile Include="FireItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Fire.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -102,6 +108,12 @@
       <Filter>Header Files\overlays</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FireItem.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="Fire.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

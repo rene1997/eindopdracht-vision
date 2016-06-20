@@ -19,6 +19,7 @@ private:
 	std::vector<std::pair<std::string, bool>>* tasks;
 	void drawHealthBar(int overlaystatus);
 	void drawInfo();
+
 	
 };
 

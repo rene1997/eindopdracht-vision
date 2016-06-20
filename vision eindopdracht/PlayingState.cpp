@@ -4,20 +4,12 @@
 
 #include "PlayingState.h"
 
-#ifdef __APPLE__
-#include <OpenGL/OpenGL.h>
-#include <GLUT/glut.h>
-#include <cstdlib>
-#include <iostream>
-
-#else
 #include <windows.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <cstdlib>
 #include <iostream>
-#endif
 
 void PlayingState::Init(GameStateManager *game, Camera *cam, KeyHandler * hand) {
     this->manager = game;
@@ -67,17 +59,9 @@ void PlayingState::Resume() {
 void PlayingState::Update() {
 	
     bool collides = false;
-    for( auto &obj1 : models) {
-        for (auto &obj2 : models) {
-            if (obj1 != obj2 && obj1.second->CollidesWith(obj2.second)) {
-                collides = true;
-            }
-        }
-        if(!collides) {
-            obj1.second->update();
-        }
-        collides = false;
-    }
+	for (auto &obj1 : models) {
+		obj1.second->update(0);
+	}
 }
 
 

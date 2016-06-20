@@ -153,6 +153,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Extinguisher.cpp" />
+    <ClCompile Include="Fire.cpp" />
+    <ClCompile Include="FireItem.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="KeyHandler.cpp" />
@@ -166,6 +168,8 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Extinguisher.h" />
+    <ClInclude Include="Fire.h" />
+    <ClInclude Include="FireItem.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="KeyHandler.h" />

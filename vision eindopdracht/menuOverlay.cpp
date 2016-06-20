@@ -5,9 +5,10 @@
 #include<string>
 #include <vector>
 #include <utility>
-
+#include <sstream>
 #include "Camera.h"
 #include "menuOverlay.h"
+
 
 menuOverlay::menuOverlay(Camera * cam, std::vector<std::pair<std::string, bool>>* tasks)
 {
@@ -46,8 +47,11 @@ void menuOverlay::drawInfo() {
 		y0 += 50;
 
 	}
-	
-
+	glColor3f(0, 0, 0);
+	std::ostringstream oss;
+	oss << "x: " << camera_->posX << " z: " << camera_->posZ;
+	std::string string = oss.str();
+	glutdrawstring( string, 0, 15, GLUT_BITMAP_HELVETICA_10);
 
 
 
@@ -85,7 +89,7 @@ void menuOverlay::drawHealthBar(int overlaystate) {
 	glEnd();
 
 	//drawindicator:
-	float indicatorpos = ((y1 - y0) * overlaystate) / 250;
+	float indicatorpos = ((y1 - y0) * overlaystate) / 100;
 
 	int indicatorx0 = x0 - 10;
 	int indicatory0 = camera_->height - indicatorpos - margin;
@@ -137,3 +141,4 @@ void glutdrawstring(std::string str, int x, int y, void* style)
 		glutBitmapCharacter(style, str[i]);
 	}
 }
+

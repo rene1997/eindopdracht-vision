@@ -6,8 +6,12 @@
 #include "ObjModel.h"
 #include "Extinguisher.h"
 #include "Player.h"
+#include "FireItem.h"
 #include <vector>
 #include <utility>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 
 class menuOverlay;
 
@@ -24,19 +28,20 @@ class MenuState : public GameState  {
 		void DrawGround();
 		void DrawOverLay();
 		virtual void Draw() override;
-		void drawCube(int x0, int x1, int z0, int z1);
 		virtual void preDraw() override;
 		virtual void checkMovementCollission() override;
+		void LoadGround();
 	private:
 		GameStateManager *manager;
 		Camera * camera;
 		KeyHandler * key_handler;
 		vector<ObjModel*>  models;
+		FireItem * item;
 		Extinguisher * extinguisher_;
 		Player * player_;
 		menuOverlay * overlay_;
 		std::vector<std::pair<std::string, bool>>* tasks;
-		int fire = 250;
+		GLuint  groundTexture;
 };
 
 #endif

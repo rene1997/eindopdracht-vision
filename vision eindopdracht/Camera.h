@@ -9,7 +9,7 @@
 class Camera {
 public:
 	float posX = 0;
-	float posY = 1;
+	float posY = 2;
 	float posZ = 4;
 	float rotX = 0;
 	float rotY = 0;
