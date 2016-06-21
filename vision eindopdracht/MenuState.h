@@ -33,6 +33,7 @@ class MenuState : public GameState  {
 		virtual void checkMovementCollission() override;
 		void LoadGround();
 	private:
+		short counter = 0;
 		GameStateManager *manager;
 		Camera * camera;
 		KeyHandler * key_handler;

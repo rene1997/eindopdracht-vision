@@ -57,7 +57,20 @@ void MenuState::HandleEvents()
 
 void MenuState::Update()
 {
-	player_->update();
+	//handle extuingishing
+	if (key_handler->keys['l']) {
+		counter++;
+		if (counter > 5) {
+			watermodels.push_back(extinguisher_->FireWater(camera));
+			counter = 0;
+		}
+		
+	}
+
+	if (item->getFireHealth() <= 0) {
+		manager->nextState();
+	}
+	
 	//task one:
 	if (!tasks->at(0).second) {
 		if (item->getFireHealth() < 100) {
@@ -72,15 +85,11 @@ void MenuState::Update()
 		}
 	}
 
+
+	player_->update();
 	item->update(1);
 	
-	if (key_handler->keys['l']) {
-		watermodels.push_back(extinguisher_->FireWater(camera));
-	}
 
-	if(item->getFireHealth() <= 0){
-		manager->nextState();
-	}
 
 	std::vector<water *>::const_iterator iter;
 	for (iter = watermodels.begin(); iter != watermodels.end(); ++iter) {
@@ -88,6 +97,13 @@ void MenuState::Update()
 
 		if (item->checkCollision(particle->xpos, particle->zpos)) {
 			item->removeFireHealth(); 
+			watermodels.erase(iter);
+			if (watermodels.size() > 0) {
+				iter = watermodels.begin();
+			}
+			else {
+				break;
+			}
 		}
 
 

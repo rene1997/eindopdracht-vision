@@ -49,7 +49,7 @@ void Fire::addParticle(int i)
 
 void Fire::removeHealth()
 {
-	health-= 0.01;
+	health-= 0.5;
 }
 
 void Fire::update(float deltatime) {
