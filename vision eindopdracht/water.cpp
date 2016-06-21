@@ -6,10 +6,10 @@
 
 # define M_PI           3.14159265358979323846  /* pi */
 
-water::water(float startx, float starty, float startz, float xdirection, float  ydirection):ObjModel("models/water/water4.obj")
+water::water(float startx, float starty, float startz, float xdirection, float  ydirection):ObjModel("models/water/water7.obj")
 {
 	xpos = startx;
-	ypos = starty;
+	ypos = 2;
 	zpos = startz;
 	yrot = ydirection;
 
@@ -25,19 +25,22 @@ float toRadian(float degree) {
 }
 
 
-void water::update(float deltatime) {
-	//ypos -= (sin(toRadian(xrot))) * 0.5f * deltatime;
-	zpos += cos(toRadian(yrot))* 0.01f * deltatime;
+bool water::update(float deltatime) {
+	ypos -= (sin(toRadian(xrot))) * 0.1f * deltatime;
+	zpos += cos(toRadian(yrot))* 0.1f * deltatime;
 	//if rotate on y as: 
-	xpos += (sin(toRadian(yrot))) * 0.01f * deltatime;
+	xpos += (sin(toRadian(yrot))) * 0.1f * deltatime;
 
 	//gravity
-	xrot += 0.1f * deltatime;
+	xrot += 1 * deltatime;
 
-	if (ypos < -15)
+	if (ypos < -0.5)
 	{
-		//remove
+		
+		return 1;
 	}
+
+	return 0;
 }
 
 

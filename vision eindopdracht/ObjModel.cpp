@@ -276,7 +276,7 @@ void ObjModel::draw() {
 	float depth = vertices_max->z - vertices_min->z;
 	glLineWidth(2);
 
-	int scale = 4;
+	int scale = 1;
 	glBegin(GL_LINE_LOOP);
 	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_min->z* scale);
 	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_min->z* scale);
@@ -361,11 +361,12 @@ void ObjModel::loadMaterialFile(std::string fileName, std::string dirName) {
 
 }
 
-void ObjModel::update(float deltatime) {
+bool ObjModel::update(float deltatime) {
 	yrot += 0.5;
 	if (xpos > 5) {
 		xpos = -5;
 	}
+	return 0;
 }
 
 

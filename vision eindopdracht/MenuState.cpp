@@ -12,6 +12,7 @@
 #include "Fire.h"
 #include "water.h"
 
+
 //int crosshairX, crosshairY;
 
 void MenuState::Init(GameStateManager * game, Camera * cam, KeyHandler * hand)
@@ -26,10 +27,11 @@ void MenuState::Init(GameStateManager * game, Camera * cam, KeyHandler * hand)
 	glColor3f(0, 0, 0);
 	water * truck = new water(1,1,1,1,0);
 	truck->xpos = 1; truck->zpos = 1; truck->ypos = 2;
-	models.push_back(truck);
+	watermodels.push_back(truck);
 
 	tasks = new vector<pair<std::string, bool>>;
-	tasks->push_back(pair<std::string, bool>("1) Walk to the cube!", false));
+	tasks->push_back(pair<std::string, bool>("1) Walk to the container!", false));
+	tasks->push_back(pair<std::string, bool>("1) extinguish the fire", false));
 
 	LoadGround();
 
@@ -56,60 +58,59 @@ void MenuState::HandleEvents()
 void MenuState::Update()
 {
 	player_->update();
-	
-	item->update(1);
-	
-
-
 	//task one:
 	if (!tasks->at(0).second) {
-		if (item->checkCollision(camera->posX * -1, camera->posZ * -1)) {
-			tasks->push_back(pair<std::string, bool>("2) Click to extinguish", false));
-			tasks->at(0).second = true;
+		if (item->getFireHealth() < 100) {
+			tasks->at(0).second = 1;
 		}
 	}
+
+	//task two:
+	if (!tasks->at(1).second) {
+		if (item->getFireHealth() <= 0 ) {
+			tasks->at(1).second = 1;
+		}
+	}
+
+	item->update(1);
 	
-
-	//task 2:
-	if (tasks->size() == 2 && !tasks->at(1).second) {
-
-		if (item->checkCollision(camera->posX*-1, camera->posZ*-1) &&key_handler->keys['l']) {
-			
-			item->removeFireHealth();
-		}
-		if (item->getFireHealth() == 0) {
-
-			tasks->at(1).second = true;
-		}
-		
-		
+	if (key_handler->keys['l']) {
+		watermodels.push_back(extinguisher_->FireWater(camera));
 	}
 
-	bool done = true;
-	for (int i = 0; i < tasks->size(); i++) {
-		if ((!tasks->at(i).second) || (tasks->size() < 2)) {
-			done = false;
-		}
-	}
-
-	if(done){
+	if(item->getFireHealth() <= 0){
 		manager->nextState();
 	}
 
+	std::vector<water *>::const_iterator iter;
+	for (iter = watermodels.begin(); iter != watermodels.end(); ++iter) {
+		water * particle = dynamic_cast<water *>(*iter);
 
-	for each (auto &m in models) {
-		m->update(1);
+		if (item->checkCollision(particle->xpos, particle->zpos)) {
+			item->removeFireHealth(); 
+		}
+
+
+		try {
+			if (particle->update(1)) {
+				watermodels.erase(iter);
+				if (watermodels.size() > 0) {
+					iter = watermodels.begin();
+				}
+				else {
+					break;
+				}			 
+			}
+		}
+		catch (int e) {
+			
+		}
 	}
-
-
 }
 
 
 
 void MenuState::DrawGround() {
-
-
-
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, groundTexture);
 
@@ -136,17 +137,7 @@ void MenuState::DrawOverLay()
 void MenuState::Draw()
 {
 	glColor3f(1, 1, 1);
-	//GLUquadricObj * sphere = gluNewQuadric();
-	//gluSphere(sphere, 0.025, 15, 15);
 
-	
-
-	
-
-	//glEnable(GL_ALPHA_TEST);
-	//glAlphaFunc(GL_GREATER, 0.5);
-	//glEnable(GL_DEPTH_TEST);
-	
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	GLfloat positions[4] = { 1,1,1, 0.5 };
@@ -154,22 +145,13 @@ void MenuState::Draw()
 
 	DrawGround();
 
-	
-	
-	for (auto &m : models) {
+	for (auto &m : watermodels) {
 		m->draw();
 	}
-	
-
 
 	item->draw();
 
-
-	
-
 	overlay_->drawMenuOverLay(item->getFireHealth());
-	//extinguisher_->draw();
-	//DrawCrosshair(camera->width/2,camera->height/2);
 }
 
 void MenuState::preDraw()

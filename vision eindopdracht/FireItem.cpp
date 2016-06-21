@@ -17,8 +17,9 @@ FireItem::~FireItem()
 {
 }
 
-void FireItem::update(float deltatime) {
+bool FireItem::update(float deltatime) {
 	fire->update(deltatime);
+	return 0;
 }
 
 void FireItem::draw()

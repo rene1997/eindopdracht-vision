@@ -19,7 +19,7 @@ public:
 	~ArrowModel(void);
 
 	float toRadian(float degree);
-    void update(float deltatime) override;
+    bool update(float deltatime) override;
 private:
 	GameState * state;
 };

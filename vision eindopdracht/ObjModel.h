@@ -156,5 +156,5 @@ public:
 
 	virtual void draw();
 
-	virtual void update(float deltatime);
+	virtual bool update(float deltatime);
 };

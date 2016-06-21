@@ -38,7 +38,7 @@ float ArrowModel::toRadian(float degree) {
 }
 
 
-void ArrowModel::update(float deltatime) {
+bool ArrowModel::update(float deltatime) {
 
 	ypos -= (sin(toRadian(xrot))) * 0.1f * deltatime;
 	zpos += cos(toRadian(yrot))* 0.1f * deltatime;
@@ -52,6 +52,8 @@ void ArrowModel::update(float deltatime) {
 	{
 		
 	}
+
+	return 0;
 }
 
 

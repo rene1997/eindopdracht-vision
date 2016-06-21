@@ -8,7 +8,7 @@ class FireItem :
 public:
 	FireItem(string fileName, float xpos, float ypos, float zpos);
 	~FireItem();
-	void update(float deltatime) override;
+	bool update(float deltatime) override;
 	void draw() override;
 	bool checkCollision(float x, float z);
 	int getFireHealth();

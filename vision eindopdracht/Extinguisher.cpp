@@ -1,7 +1,8 @@
 #include "Extinguisher.h"
 #include "KeyHandler.h"
 #include "GL/freeglut.h"
-
+#include "water.h"
+#include "Camera.h"
 
 
 
@@ -18,6 +19,16 @@ Extinguisher::Extinguisher(KeyHandler * hand):ObjModel(/*"models/blusser/blusser
 
 Extinguisher::~Extinguisher()
 {
+}
+
+water * Extinguisher::FireWater(Camera * camera) {
+	float roty = camera->rotY;
+	while (roty<0.0f) {
+		roty += 360.0f;
+	}
+	roty = (float)(int(roty) % 360);
+	water * waterparticle = new water(camera->posX * -1, camera->posY * -1 , camera->posZ * -1, camera->rotX * -1.3, (roty * -1) - 180);
+	return waterparticle;
 }
 
 void Extinguisher::draw()

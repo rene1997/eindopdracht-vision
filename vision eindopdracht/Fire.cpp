@@ -49,7 +49,7 @@ void Fire::addParticle(int i)
 
 void Fire::removeHealth()
 {
-	health--;
+	health-= 0.01;
 }
 
 void Fire::update(float deltatime) {
@@ -69,7 +69,12 @@ void Fire::update(float deltatime) {
 			if (particle->ypos > ((ypos + 8) - ((particle->zpos - zpos)+ (particle->xpos - xpos))))
 			{
 				particles.erase(iter);
-				iter = particles.begin();
+				if (particles.size() > 0) {
+					iter = particles.begin();
+				}
+				else {
+					break;
+				}
 			}
 		}
 		catch (int e) {

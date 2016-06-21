@@ -70,10 +70,17 @@ void onKeyboardUp(unsigned char key, int one, int two)
 
 void mouseFunc(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON && !state) {
-		key_handler.onKeyboard('l', x, y);
-	}else if(button == GLUT_LEFT_BUTTON){
-		key_handler.onKeyboardUp('l', x, y);
+		if (key_handler.keys['l']) {
+			key_handler.onKeyboardUp('l', x, y);
+		}
+		else {
+			key_handler.onKeyboard('l', x, y);
+		}
 	}
+
+
+
+		
 
 }
 

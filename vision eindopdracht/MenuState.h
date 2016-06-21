@@ -36,7 +36,7 @@ class MenuState : public GameState  {
 		GameStateManager *manager;
 		Camera * camera;
 		KeyHandler * key_handler;
-		vector<water*>  models;
+		vector<water*>  watermodels;
 		FireItem * item;
 		Extinguisher * extinguisher_;
 		Player * player_;
