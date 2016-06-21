@@ -24,22 +24,13 @@ menuOverlay::~menuOverlay()
 
 
 void menuOverlay::drawInfo() {
-	//draw walk info
-	int x0 = camera_->width / 2 - (28*7);
-	int y0 = 100;
-	glColor3f(0, 0, 0.8);
-	glutdrawstring("Use W,A,S,D for walking walk", x0, y0, GLUT_BITMAP_TIMES_ROMAN_24);
 
-	//draw look info
-	y0 += 50;
-	x0 = camera_->width / 2 - (28 * 7);
-	glutdrawstring("Use the mouse to look around", x0, y0, GLUT_BITMAP_TIMES_ROMAN_24);
 
 	//draw task
 
 	glColor3f(1, 1, 0);
-	y0 = 50;
-	x0 = camera_->width - 250;
+	int y0 = 50;
+	int x0 = camera_->width - 250;
 	
 	for (int i = 0; i < tasks->size(); i++) {
 		glColor3f(!tasks->at(i).second, 1, 0);
@@ -52,9 +43,6 @@ void menuOverlay::drawInfo() {
 	oss << "x: " << camera_->posX << " z: " << camera_->posZ;
 	std::string string = oss.str();
 	glutdrawstring( string, 0, 15, GLUT_BITMAP_HELVETICA_10);
-
-
-
 }
 
 void menuOverlay::drawMenuOverLay(int overlaystate)

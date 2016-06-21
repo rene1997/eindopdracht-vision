@@ -160,9 +160,10 @@ ObjModel::ObjModel(std::string fileName) {
 
 	//Turning to vec:
 	for (ObjGroup *group : groups) {
+		group->vecs = vector<ObjModel::Vec>();
 		for (Face &face : group->faces) {
 			for (auto &vertex : face.vertices) {
-				group->vecs.push_back(Vec(vertices[vertex.position]->x, vertices[vertex.position]->y, vertices[vertex.position]->z, normals[vertex.normal]->x, normals[vertex.normal]->y, normals[vertex.normal]->z, texcoords[vertex.texcoord]->x, texcoords[vertex.texcoord]->y));
+					group->vecs.push_back(Vec(vertices[vertex.position]->x, vertices[vertex.position]->y, vertices[vertex.position]->z, normals[vertex.normal]->x, normals[vertex.normal]->y, normals[vertex.normal]->z, texcoords[vertex.texcoord]->x, texcoords[vertex.texcoord]->y));
 			}
 		}
 	}
@@ -275,7 +276,7 @@ void ObjModel::draw() {
 	float depth = vertices_max->z - vertices_min->z;
 	glLineWidth(2);
 
-	int scale = 1;
+	int scale = 4;
 	glBegin(GL_LINE_LOOP);
 	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_min->z* scale);
 	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_min->z* scale);

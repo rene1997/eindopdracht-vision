@@ -10,6 +10,7 @@
 #include "stb_image.h"
 #include "FireItem.h"
 #include "Fire.h"
+#include "water.h"
 
 //int crosshairX, crosshairY;
 
@@ -21,9 +22,10 @@ void MenuState::Init(GameStateManager * game, Camera * cam, KeyHandler * hand)
 	this->player_ = new Player(key_handler, camera, this);
 
 	item = new FireItem("models/garbage_bin/untitled1.obj", 11,0,15);
-	
-	ObjModel * truck = new ObjModel("models/faun3500/untitled2.obj");
-	truck->xpos = -4; truck->zpos = -10; truck->yrot = 45;
+
+	glColor3f(0, 0, 0);
+	water * truck = new water(1,1,1,1,0);
+	truck->xpos = 1; truck->zpos = 1; truck->ypos = 2;
 	models.push_back(truck);
 
 	tasks = new vector<pair<std::string, bool>>;
@@ -95,6 +97,10 @@ void MenuState::Update()
 	}
 
 
+	for each (auto &m in models) {
+		m->update(1);
+	}
+
 
 }
 
@@ -129,19 +135,32 @@ void MenuState::DrawOverLay()
 
 void MenuState::Draw()
 {
+	glColor3f(1, 1, 1);
+	//GLUquadricObj * sphere = gluNewQuadric();
+	//gluSphere(sphere, 0.025, 15, 15);
+
+	
+
+	
+
 	//glEnable(GL_ALPHA_TEST);
 	//glAlphaFunc(GL_GREATER, 0.5);
 	//glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_LIGHTING);
-	//glEnable(GL_LIGHT0);
+	
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	GLfloat positions[4] = { 1,1,1, 0.5 };
+	glLightfv(GL_LIGHT0, GL_POSITION, positions);
 
 	DrawGround();
 
 	
-	glColor3f(1, 1, 1);
+	
 	for (auto &m : models) {
 		m->draw();
 	}
+	
+
 
 	item->draw();
 

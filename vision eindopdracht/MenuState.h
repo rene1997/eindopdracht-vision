@@ -14,6 +14,7 @@
 #include <GL/glut.h>
 
 class menuOverlay;
+class water;
 
 class MenuState : public GameState  {
 	// Inherited via GameState
@@ -35,7 +36,7 @@ class MenuState : public GameState  {
 		GameStateManager *manager;
 		Camera * camera;
 		KeyHandler * key_handler;
-		vector<ObjModel*>  models;
+		vector<water*>  models;
 		FireItem * item;
 		Extinguisher * extinguisher_;
 		Player * player_;

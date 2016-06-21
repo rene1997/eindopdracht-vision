@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArrowModel.cpp" />
     <ClCompile Include="Extinguisher.cpp" />
     <ClCompile Include="Fire.cpp" />
     <ClCompile Include="FireItem.cpp" />
@@ -164,8 +165,10 @@
     <ClCompile Include="ObjModel.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayingState.cpp" />
+    <ClCompile Include="water.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrowModel.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Extinguisher.h" />
     <ClInclude Include="Fire.h" />
@@ -181,6 +184,7 @@
     <ClInclude Include="PlayingState.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_perlin.h" />
+    <ClInclude Include="water.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

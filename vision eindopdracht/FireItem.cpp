@@ -29,17 +29,17 @@ void FireItem::draw()
 
 bool FireItem::checkCollision(float x, float z)
 {
-	float maxX = this->xpos + vertices_max->x * 2.5;
-	float maxZ = this->zpos + vertices_max->z * 2.5;
-	float maxY = this->ypos + vertices_max->y * 2.5;
-	float minX = this->xpos + vertices_min->x * 2.5;
-	float minZ = this->zpos + vertices_min->z * 2.5;
-	float minY = this->ypos + vertices_min->y * 2.5;
+	int scale = 4;
+	float maxX = this->xpos + vertices_max->x * scale;
+	float maxZ = this->zpos + vertices_max->z * scale;
+	float maxY = this->ypos + vertices_max->y * scale;
+	float minX = this->xpos + vertices_min->x * scale;
+	float minZ = this->zpos + vertices_min->z * scale;
+	float minY = this->ypos + vertices_min->y * scale;
 	
 	bool hasCollision = 0;
 
 	if (x > minX && x < maxX && z > minZ && z < maxZ) {
-		//z > minZ && z < maxZ
 		hasCollision = 1;
 	}
 	else if(x < minX && x > maxX && z < minZ && z > maxZ){

@@ -65,14 +65,15 @@ void Fire::update(float deltatime) {
 		if (particle->ypos > ypos + 2) {
 			particle->state = State::second;
 		}
-		if (particle->ypos > ypos + 4) {
-			try{
+		try {
+			if (particle->ypos > ((ypos + 8) - ((particle->zpos - zpos)+ (particle->xpos - xpos))))
+			{
 				particles.erase(iter);
+				iter = particles.begin();
 			}
-			catch(int e){
-				
-			}
-			
+		}
+		catch (int e) {
+
 		}
 		
 	}
@@ -87,36 +88,40 @@ void Fire::update(float deltatime) {
 
 void Fire::draw() {
 	glDisable(GL_TEXTURE_2D);
-	float size = 0.05f;
+	glDisable(GL_LIGHTING);
+	float size = 0.03f;
 	for each(auto &m in particles) {
 		float tempx = m->xpos;
 		float tempy = m->ypos;
 		float tempz = m->zpos;
+		float random = (float(rand() % 1000))  / 2000  + 0.5;
 		glBegin(GL_TRIANGLES);
 		//side 1
 		glColor3f(0.5f, 0.5f, 0.0f); glVertex3d(tempx + 0.0f, tempy + size, tempz + 0.0f);
-		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx - size, tempy - size, tempz + size);
-		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx + size, tempy - size, tempz + size);
+		glColor3f(random, random /2, 0.0f); glVertex3d(tempx - size, tempy - size, tempz + size);
+		glColor3f(random, random / 2, 0.0f); glVertex3d(tempx + size, tempy - size, tempz + size);
 
 		//side 2
 		glColor3f(0.5f, 0.5f, 0.0f); glVertex3d(tempx + 0.0f, tempy - size, tempz + 0.0f);
-		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx - size, tempy - size, tempz + size);
-		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx + 0.0f, tempy - size, tempz - size);
+		glColor3f(random, random / 2, 0.0f); glVertex3d(tempx - size, tempy - size, tempz + size);
+		glColor3f(random, random / 2, 0.0f); glVertex3d(tempx + 0.0f, tempy - size, tempz - size);
 
 		//side 3
 		glColor3f(0.5f, 0.5f, 0.0f); glVertex3d(tempx + 0.0f, tempy + size, tempz + 0.0f);
-		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx + 0.0f, tempy - size, tempz - size);
-		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx + size, tempy - size, tempz + size);
+		glColor3f(random, random / 2, 0.0f); glVertex3d(tempx + 0.0f, tempy - size, tempz - size);
+		glColor3f(random, random / 2, 0.0f); glVertex3d(tempx + size, tempy - size, tempz + size);
 
 		//side 4
 		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx - size, tempy - size, tempz + size);
-		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx + 0.0f, tempy - size, tempz - size);
-		glColor3f(0.5f, 0.2f, 0.0f); glVertex3d(tempx + size, tempy - size, tempz + size);
+		glColor3f(random, random / 2, 0.0f); glVertex3d(tempx + 0.0f, tempy - size, tempz - size);
+		glColor3f(random, random / 2, 0.0f); glVertex3d(tempx + size, tempy - size, tempz + size);
 
 		glEnd();
 
 	}
 	glColor3f(1, 1, 1);
+	glEnable(GL_LIGHTING);
+
 }
 
 Fire::~Fire()
