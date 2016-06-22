@@ -159,6 +159,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="KeyHandler.cpp" />
+    <ClCompile Include="level2Overlay.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="menuOverlay.cpp" />
     <ClCompile Include="MenuState.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="KeyHandler.h" />
+    <ClInclude Include="level2Overlay.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="menuOverlay.h" />
     <ClInclude Include="MenuState.h" />

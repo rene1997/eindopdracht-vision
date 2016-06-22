@@ -10,13 +10,15 @@ public:
 	void update();
 	void checkKeys();
 	ObjModel* getItem();
+	ObjModel * item_;
+	int speed = 1;
 	~Player();
 private:
 	KeyHandler * keyhand_;
 	Camera * camera_;
 	GameState * state_;
-	ObjModel * item_;
 	int counter = 0;
+	
 
 	void walk(bool forward, bool right, bool left, bool back);
 	void move(float angle, float multiplier);

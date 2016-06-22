@@ -9,7 +9,7 @@
 water::water(float startx, float starty, float startz, float xdirection, float  ydirection):ObjModel("models/water/water7.obj")
 {
 	xpos = startx;
-	ypos = 2;
+	ypos = starty;
 	zpos = startz;
 	yrot = ydirection;
 

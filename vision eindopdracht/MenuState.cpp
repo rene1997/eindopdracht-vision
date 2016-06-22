@@ -19,19 +19,20 @@ void MenuState::Init(GameStateManager * game, Camera * cam, KeyHandler * hand)
 {
 	this->manager = game;
 	this->camera = cam;
+	camera->rotY += 90;
 	this->key_handler = hand;
 	this->player_ = new Player(key_handler, camera, this);
 
 	item = new FireItem("models/garbage_bin/untitled1.obj", 11,0,15);
 
 	glColor3f(0, 0, 0);
-	water * truck = new water(1,1,1,1,0);
-	truck->xpos = 1; truck->zpos = 1; truck->ypos = 2;
-	watermodels.push_back(truck);
+	ObjModel * truck = new ObjModel("models/faun3500/untitled2.obj");
+	truck->xpos = -5; truck->zpos = -8; truck->ypos = 0;// truck->yrot = 45;
+	models.push_back(truck);
 
 	tasks = new vector<pair<std::string, bool>>;
 	tasks->push_back(pair<std::string, bool>("1) Walk to the container!", false));
-	tasks->push_back(pair<std::string, bool>("1) extinguish the fire", false));
+	tasks->push_back(pair<std::string, bool>("2) Extinguish the fire", false));
 
 	LoadGround();
 
@@ -60,7 +61,7 @@ void MenuState::Update()
 	//handle extuingishing
 	if (key_handler->keys['l']) {
 		counter++;
-		if (counter > 5) {
+		if (counter > 3) {
 			watermodels.push_back(extinguisher_->FireWater(camera));
 			counter = 0;
 		}
@@ -156,7 +157,7 @@ void MenuState::Draw()
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	GLfloat positions[4] = { 1,1,1, 0.5 };
+	GLfloat positions[4] = { 11,3,15, 0.5 };
 	glLightfv(GL_LIGHT0, GL_POSITION, positions);
 
 	DrawGround();
@@ -166,8 +167,14 @@ void MenuState::Draw()
 	}
 
 	item->draw();
+	
+	for each(auto &m in models) {
+		m->draw();
+	}
 
 	overlay_->drawMenuOverLay(item->getFireHealth());
+
+
 }
 
 void MenuState::preDraw()

@@ -12,7 +12,7 @@ Extinguisher::Extinguisher(KeyHandler * hand):ObjModel(/*"models/blusser/blusser
 	xpos = ypos = zpos = xrot = yrot = zrot = 0;
 	zpos = -0.75;
 	ypos = -1.25;
-	xpos = 0.75;
+	xpos = 0.4;
 	yrot = -80;
 }
 
@@ -27,15 +27,16 @@ water * Extinguisher::FireWater(Camera * camera) {
 		roty += 360.0f;
 	}
 	roty = (float)(int(roty) % 360);
-	water * waterparticle = new water(camera->posX * -1, camera->posY * -1 , camera->posZ * -1, camera->rotX * -1.3, (roty * -1) - 180);
+	water * waterparticle = new water(camera->posX * -1, camera->posY  , camera->posZ * -1, camera->rotX * -1.3, (roty * -1) - 180);
 	return waterparticle;
 }
 
 void Extinguisher::draw()
 {
+	glDisable(GL_TEXTURE_2D);
 	glColor3f(1, 0, 0);
 	ObjModel::draw();
-	glDisable(GL_TEXTURE_2D);
+	
 	glColor3f(1, 1, 1);
 }
 

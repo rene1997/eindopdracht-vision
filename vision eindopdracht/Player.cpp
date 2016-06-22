@@ -33,8 +33,6 @@ Player::~Player()
 
 void Player::walk(bool forward, bool right, bool left, bool back)
 {
-	int speed = 1;
-	if (GLUT_ACTIVE_SHIFT == glutGetModifiers()) speed += 1;
 	
 	if (forward) move(90, speed);
 	
@@ -44,7 +42,6 @@ void Player::walk(bool forward, bool right, bool left, bool back)
 	
 	if (back) move(270, speed);
 
-	camera_->posY += (float)sin(counter) / 20;
 	counter++;
 
 	

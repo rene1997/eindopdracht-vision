@@ -5,18 +5,17 @@
 #include <utility>
 
 class Camera;
-class menuOverlay
+class Level2Overlay
 {
 public:
-	menuOverlay(Camera * cam, std::vector<std::pair<std::string, bool>>* tasks);
-	~menuOverlay();
+	Level2Overlay(Camera * cam, std::vector<std::pair<std::string, bool>>* tasks);
+	~Level2Overlay();
 
 	void drawMenuOverLay(int overlaystatus);
-
 	void initDrawing();
 	void stopDrawing();
 	void glutdrawstring(std::string str, int x, int y, void* style);
-	
+
 private:
 	Camera * camera_;
 	int counterinfo = 0;
@@ -24,7 +23,7 @@ private:
 	void drawHealthBar(int overlaystatus);
 	void drawInfo();
 
-	
+
 };
 
 
