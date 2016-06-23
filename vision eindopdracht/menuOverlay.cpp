@@ -29,9 +29,9 @@ void menuOverlay::drawInfo() {
 	if (counterinfo < 60 * 5) {
 		counterinfo++;
 		glColor3f(0, 0, 0.8);
-		glutdrawstring("Use W,A,S,D to walk", camera_->width / 2 - 40, 200, GLUT_BITMAP_TIMES_ROMAN_24);
-		glutdrawstring("Use the mouse to look around", camera_->width / 2 - 75, 250, GLUT_BITMAP_TIMES_ROMAN_24);
-		glutdrawstring("Click to enable/disable extinguish", camera_->width / 2 - 90, 300, GLUT_BITMAP_TIMES_ROMAN_24);
+		glutdrawstring("Use W,A,S,D to walk", camera_->width / 2 - 40 + 200, 200, GLUT_BITMAP_TIMES_ROMAN_24);
+		glutdrawstring("Use the mouse to look around", camera_->width / 2 - 75 + 200, 250, GLUT_BITMAP_TIMES_ROMAN_24);
+		glutdrawstring("Click to enable/disable extinguish", camera_->width / 2 - 90 + 200, 300, GLUT_BITMAP_TIMES_ROMAN_24);
 	}
 	
 
@@ -43,7 +43,7 @@ void menuOverlay::drawInfo() {
 	
 	for (int i = 0; i < tasks->size(); i++) {
 		glColor3f(!tasks->at(i).second, 1, 0);
-		glutdrawstring(tasks->at(i).first, x0, y0, GLUT_BITMAP_TIMES_ROMAN_24);
+		glutdrawstring(tasks->at(i).first, x0 + 400, y0 , GLUT_BITMAP_TIMES_ROMAN_24);
 		y0 += 50;
 
 	}
@@ -55,7 +55,7 @@ void menuOverlay::drawInfo() {
 
 
 	glColor3f(0, 0, 1);
-	glutdrawstring("Level 1", camera_->width - 75, camera_->height - 10, GLUT_BITMAP_TIMES_ROMAN_24);
+	glutdrawstring("Level 1", camera_->width + 350, camera_->height + 250, GLUT_BITMAP_TIMES_ROMAN_24);
 	
 }
 

@@ -34,9 +34,11 @@ water * Extinguisher::FireWater(Camera * camera) {
 void Extinguisher::draw()
 {
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
 	glColor3f(1, 0, 0);
 	ObjModel::draw();
-	
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
 	glColor3f(1, 1, 1);
 }
 

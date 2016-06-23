@@ -31,8 +31,8 @@ void Level2Overlay::drawInfo() {
 	if (counterinfo < 60 * 5) {
 		counterinfo++;
 		glColor3f(1, 0, 0);
-		glutdrawstring("press e to exit the vehicle", camera_->width / 2 - 40, 100, GLUT_BITMAP_TIMES_ROMAN_24);
-		glutdrawstring("when walking press ^E again to get in the vehicle", camera_->width / 2 - 150, 150, GLUT_BITMAP_TIMES_ROMAN_24);
+		glutdrawstring("press e to exit the vehicle", camera_->width / 2 - 40 + 200, 100, GLUT_BITMAP_TIMES_ROMAN_24);
+		glutdrawstring("when walking press ^E again to get in the vehicle", camera_->width / 2 - 150 + 200, 150, GLUT_BITMAP_TIMES_ROMAN_24);
 	}
 
 
@@ -43,7 +43,7 @@ void Level2Overlay::drawInfo() {
 
 	for (int i = 0; i < tasks->size(); i++) {
 		glColor3f(!tasks->at(i).second, 1, 0);
-		glutdrawstring(tasks->at(i).first, x0, y0, GLUT_BITMAP_TIMES_ROMAN_24);
+		glutdrawstring(tasks->at(i).first, x0 + 400, y0, GLUT_BITMAP_TIMES_ROMAN_24);
 		y0 += 50;
 
 	}
@@ -56,8 +56,8 @@ void Level2Overlay::drawInfo() {
 
 
 	glColor3f(0, 0, 1);
-	glutdrawstring("Level 2", camera_->width - 75, camera_->height - 10, GLUT_BITMAP_TIMES_ROMAN_24);
-
+	glutdrawstring("Level 2", camera_->width - 75 + 425, camera_->height - 10 + 260, GLUT_BITMAP_TIMES_ROMAN_24);
+	 
 }
 
 void Level2Overlay::drawMenuOverLay(int overlaystate)

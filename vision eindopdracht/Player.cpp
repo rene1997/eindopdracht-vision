@@ -35,10 +35,13 @@ void Player::walk(bool forward, bool right, bool left, bool back)
 {
 	
 	if (forward) move(90, speed);
+	if (speed  != 5) {
+		if (right) move(180, speed);
+
+		if (left) move(0, speed);
+	}
 	
-	if (right) move(180, speed);
 	
-	if (left) move(0, speed);
 	
 	if (back) move(270, speed);
 

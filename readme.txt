@@ -22,5 +22,8 @@ Extra info:
 * met ']' ga je direct van level 1 naar level 2 
 * met 'esc' kan je afsluiten
 * met f5 start het spel op
+* sturen in de brandweerauto moet met de muis, a en d werken dan niet
+* wanneer het niet lukt om uit de brandweerauto te stappen druk eerst op 'e'
+* wanneer het niet lukt om in de brandweerauto te stappen druk eerst op shift 'e'
 
 spel is gemaakt door René Keijzer

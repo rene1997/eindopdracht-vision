@@ -271,41 +271,44 @@ void ObjModel::draw() {
 	}
 
 	//draw box:
-	
-	float width = vertices_max->x - vertices_min->x;
-	float depth = vertices_max->z - vertices_min->z;
-	glLineWidth(2);
+	if (0) {
+		float width = vertices_max->x - vertices_min->x;
+		float depth = vertices_max->z - vertices_min->z;
+		glLineWidth(2);
 
-	int scale = 1;
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_min->z* scale);
-	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_min->z* scale);
-	glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_min->z* scale);
-	glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_min->z* scale);
-	glEnd();
+		int scale = 1;
+		glBegin(GL_LINE_LOOP);
+		glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_min->z* scale);
+		glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_min->z* scale);
+		glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_min->z* scale);
+		glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_min->z* scale);
+		glEnd();
 
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_max->z* scale);
-	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_max->z* scale);
-	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_max->z* scale);
-	glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_max->z* scale);
-	glEnd();
+		glBegin(GL_LINE_LOOP);
+		glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_max->z* scale);
+		glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_max->z* scale);
+		glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_max->z* scale);
+		glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_max->z* scale);
+		glEnd();
 
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_min->z* scale);
-	glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_max->z* scale);
-	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_max->z* scale);
-	glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_min->z* scale);
-	glEnd();
-	
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_max->z* scale);
-	glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_max->z* scale);
-	glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_min->z* scale);
-	glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_min->z* scale);
-	glEnd();
-	
+		glBegin(GL_LINE_LOOP);
+		glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_min->z* scale);
+		glVertex3f(vertices_max->x* scale, vertices_max->y* scale, vertices_max->z* scale);
+		glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_max->z* scale);
+		glVertex3f(vertices_min->x* scale, vertices_max->y* scale, vertices_min->z* scale);
+		glEnd();
+
+		glBegin(GL_LINE_LOOP);
+		glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_max->z* scale);
+		glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_max->z* scale);
+		glVertex3f(vertices_min->x* scale, vertices_min->y* scale, vertices_min->z* scale);
+		glVertex3f(vertices_max->x* scale, vertices_min->y* scale, vertices_min->z* scale);
+		glEnd();
+
+		
+	}
 	glPopMatrix();
+	
 }
 
 void ObjModel::loadMaterialFile(std::string fileName, std::string dirName) {
