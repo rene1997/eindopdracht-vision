@@ -35,7 +35,8 @@ void MenuState::Init(GameStateManager * game, Camera * cam, KeyHandler * hand)
 	tasks->push_back(pair<std::string, bool>("2) Extinguish the fire", false));
 
 	LoadGround();
-
+	Loadskybox();
+	qobj = gluNewQuadric();
 	this->overlay_ = new menuOverlay(camera, tasks);
 }
 
@@ -154,6 +155,15 @@ void MenuState::DrawOverLay()
 void MenuState::Draw()
 {
 	glColor3f(1, 1, 1);
+	gluQuadricDrawStyle(qobj, GLU_FILL);
+	glBindTexture(GL_TEXTURE_2D, skyboxTexture);
+	gluQuadricTexture(qobj, GL_TRUE);
+	gluQuadricNormals(qobj, GLU_SMOOTH);
+
+	gluSphere(qobj, 200, 50, 50);
+
+
+	glColor3f(1, 1, 1);
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
@@ -194,6 +204,26 @@ void MenuState::LoadGround(){
 	unsigned char* data = stbi_load("textures/grass.png", &width, &height, &bpp, 4);
 	glGenTextures(1, &groundTexture);
 	glBindTexture(GL_TEXTURE_2D, groundTexture);
+	glTexImage2D(GL_TEXTURE_2D,
+		0,		//level
+		GL_RGBA,		//internal format
+		width,		//width
+		height,		//height
+		0,		//border
+		GL_RGBA,		//data format
+		GL_UNSIGNED_BYTE,	//data type
+		data);		//data
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+
+}
+
+void MenuState::Loadskybox() {
+	int width, height, bpp;
+	unsigned char* data = stbi_load("textures/sky1.jpg", &width, &height, &bpp, 4);
+	glGenTextures(1, &skyboxTexture);
+	glBindTexture(GL_TEXTURE_2D, skyboxTexture);
 	glTexImage2D(GL_TEXTURE_2D,
 		0,		//level
 		GL_RGBA,		//internal format

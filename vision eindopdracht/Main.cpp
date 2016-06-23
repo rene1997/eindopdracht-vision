@@ -15,7 +15,7 @@ void Display()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0f, (float)camera.width / camera.height, 0.1, 500);
+	gluPerspective(60.0f, (float)camera.width / camera.height, 0.1, 1000);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

@@ -47,6 +47,7 @@ void Level2Overlay::drawInfo() {
 		y0 += 50;
 
 	}
+
 	glColor3f(0, 0, 0);
 	std::ostringstream oss;
 	oss << "x: " << camera_->posX << " z: " << camera_->posZ;

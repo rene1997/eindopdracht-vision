@@ -25,6 +25,7 @@ class PlayingState : public GameState {
         virtual void Pause() override;
         virtual void Resume() override;
         virtual void HandleEvents() override;
+		void Loadskybox();
         virtual void Update() override;
 		
 		virtual void Draw() override;
@@ -38,6 +39,8 @@ class PlayingState : public GameState {
 		Camera * camera;
 		PlayerStates playerstate_ = PlayerStates::car;
 		GLuint  groundTexture;
+		GLuint skyboxTexture;
+		GLUquadricObj * qobj;
 		FireItem * item_;
 		vector<water*>  watermodels;
 		Player * player_;
@@ -45,6 +48,7 @@ class PlayingState : public GameState {
 		Level2Overlay * overlay_;
 		std::vector<std::pair<std::string, bool>>* tasks;
 		int counter = 0;
+		bool isFinished = 0;
 };
 
 

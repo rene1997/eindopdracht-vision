@@ -32,10 +32,12 @@ class MenuState : public GameState  {
 		virtual void preDraw() override;
 		virtual void checkMovementCollission() override;
 		void LoadGround();
+		void Loadskybox();
 	private:
 		short counter = 0;
 		GameStateManager *manager;
 		Camera * camera;
+		GLUquadricObj *qobj;
 		KeyHandler * key_handler;
 		vector<water*>  watermodels;
 		vector<ObjModel *> models;
@@ -45,6 +47,7 @@ class MenuState : public GameState  {
 		menuOverlay * overlay_;
 		std::vector<std::pair<std::string, bool>>* tasks;
 		GLuint  groundTexture;
+		GLuint skyboxTexture;
 };
 
 #endif

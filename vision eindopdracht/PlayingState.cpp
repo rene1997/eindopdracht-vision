@@ -16,6 +16,7 @@
 #include "FireItem.h"
 #include "level2Overlay.h"
 #include "water.h"
+#include "GameOverlay.h"
 
 GLuint LoadGround();
 void DrawGround(int groundTexture);
@@ -26,7 +27,7 @@ void PlayingState::Init(GameStateManager *game, Camera *cam, KeyHandler * hand) 
 	this->key_handler = hand;
 	this->player_ = new Player(hand, cam, this);
 
-
+	gluPerspective(60.0f, (float)cam->width / cam->height, 0.1, 1000);
 	tasks = new vector<pair<std::string, bool>>;
 	tasks->push_back(pair<std::string, bool>("1) Find the fire", false));
 	tasks->push_back(pair<std::string, bool>("2) Extinguish the fire", false));
@@ -43,7 +44,9 @@ void PlayingState::Init(GameStateManager *game, Camera *cam, KeyHandler * hand) 
 	camera->posY = 6;
 
 	this->groundTexture = LoadGround();
-	vector<ObjModel*> temp;
+	Loadskybox();
+	qobj = gluNewQuadric();
+
 
 	item_ = new FireItem("models/garbage_bin/untitled1.obj", -150, 0, -150);
 
@@ -122,7 +125,7 @@ void PlayingState::Update() {
 	UpdatWaterModels();
 	if (item_->getFireHealth() <= 0) {
 		//TODO Finish game
-		exit(0);
+		isFinished = 1;
 	}
 
 	item_->update(1);
@@ -163,6 +166,21 @@ void PlayingState::UpdatWaterModels() {
 }
 
 void PlayingState::Draw() {
+
+	glColor3f(1, 1, 1);
+	gluQuadricDrawStyle(qobj, GLU_FILL);
+	glBindTexture(GL_TEXTURE_2D, skyboxTexture);
+	gluQuadricTexture(qobj, GL_TRUE);
+	gluQuadricNormals(qobj, GLU_SMOOTH);
+
+	gluSphere(qobj, 400, 100, 100);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	GLfloat positions[4] = {truck_->xpos,truck_->ypos,truck_->zpos, 0.5 };
+	glLightfv(GL_LIGHT0, GL_POSITION, positions);
+
+
 	DrawGround(groundTexture);
     for( auto &m : models) {
         m.second->draw();
@@ -177,8 +195,13 @@ void PlayingState::Draw() {
 	}
 
 	item_->draw();
+	if (!isFinished) {
+		overlay_->drawMenuOverLay(item_->getFireHealth());
+	}
+	else {
+		drawGameOverLay(camera);
+	}
 	
-	overlay_->drawMenuOverLay(item_->getFireHealth());
 	
 }
 
@@ -233,6 +256,26 @@ GLuint LoadGround() {
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	stbi_image_free(data);
 	return groundTexture;
+}
+
+void PlayingState::Loadskybox() {
+	int width, height, bpp;
+	unsigned char* data = stbi_load("textures/sky1.jpg", &width, &height, &bpp, 4);
+	glGenTextures(1, &skyboxTexture);
+	glBindTexture(GL_TEXTURE_2D, skyboxTexture);
+	glTexImage2D(GL_TEXTURE_2D,
+		0,		//level
+		GL_RGBA,		//internal format
+		width,		//width
+		height,		//height
+		0,		//border
+		GL_RGBA,		//data format
+		GL_UNSIGNED_BYTE,	//data type
+		data);		//data
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+
 }
 
 

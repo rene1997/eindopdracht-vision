@@ -76,7 +76,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="level2Overlay.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Overlays</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverlay.cpp">
+      <Filter>Source Files\Overlays</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,7 +135,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="level2Overlay.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\overlays</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverlay.h">
+      <Filter>Header Files\overlays</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
